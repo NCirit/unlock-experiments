@@ -119,6 +119,6 @@ enum {
 	VERIFY_ERROR_SIG              = 2004,
 };
 struct X509_sig_st {
-    X509_ALGOR *algor;
-    ASN1_OCTET_STRING *digest;
+	X509_ALGOR *algor;
+	ASN1_OCTET_STRING *digest;
 };

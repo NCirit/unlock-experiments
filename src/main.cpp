@@ -238,7 +238,7 @@ static bool verify_image(VERIFY_CTX* ctx)
 		if (plain_len == (int)md_len && memcmp(md_value, plain_text, md_len) == 0)
 		{
 			ctx->ret = VERIFY_ERROR_NONE;
-            std::cout << "[INFO] " << ctx->name << " verified\n";
+			std::cout << "[INFO] " << ctx->name << " verified\n";
 			goto err;
 		}
 	}
@@ -255,7 +255,7 @@ err:
 	if (ctx->ret == VERIFY_ERROR_NONE)
 		return true;
 
-    std::cout << "[CRITICAL] verify_image : " <<  ctx->ret << "\n";
+	std::cout << "[CRITICAL] verify_image : " <<  ctx->ret << "\n";
 	return false;
 }
 
@@ -273,36 +273,36 @@ int main(int argc, char* argv[])
 	std::string deviceId(argv[2]);
 	std::string unlockBinPath(argv[3]);
 
-    LGE_KEYSTORE *ks;
-    unsigned char* in = const_cast<unsigned char*>(&BLUNLOCK_KEYSTORE[0]);
+	LGE_KEYSTORE *ks;
+	unsigned char* in = const_cast<unsigned char*>(&BLUNLOCK_KEYSTORE[0]);
 
-    uint32_t len = read_der_message_length(in);
+	uint32_t len = read_der_message_length(in);
 	if (!len)
 	{
 		std::cout << "keystore length is invalid.\n";
 		return 0;
 	}
 
-    ks = d2i_LGE_KEYSTORE(NULL, (const unsigned char**)&in, len);
+	ks = d2i_LGE_KEYSTORE(NULL, (const unsigned char**)&in, len);
 
 
-    unlock_certificate_data_type *output = NULL;
+	unlock_certificate_data_type *output = NULL;
 	VERIFY_CTX verify_ctx = { 0, };
 
 	//assert(sizeof(unlock_certificate_data_type) <= LGFTM_BLUNLOCK_KEY_SIZE)
 
 
 	output = (unlock_certificate_data_type*)malloc(LGFTM_BLUNLOCK_KEY_SIZE);
-    std::ifstream f1 (unlockBinPath, std::ios_base::binary);
+	std::ifstream f1 (unlockBinPath, std::ios_base::binary);
 	f1.read(reinterpret_cast<char*>(output), LGFTM_BLUNLOCK_KEY_SIZE);
-    
+	
 
-    unlock_input_data_type input;
-    memset(&input, 0x00, sizeof(unlock_input_data_type));
+	unlock_input_data_type input;
+	memset(&input, 0x00, sizeof(unlock_input_data_type));
 	memcpy(&input.imei, imei.c_str(), sizeof(input.imei));
-    memcpy(&input.device_id, deviceId.c_str(), sizeof(input.device_id));
+	memcpy(&input.device_id, deviceId.c_str(), sizeof(input.device_id));
 
-    verify_ctx.key = ks->mykeybag->mykey->key_material;
+	verify_ctx.key = ks->mykeybag->mykey->key_material;
 	verify_ctx.name = "unlock";
 	verify_ctx.image_addr = (unsigned char*)&input;
 	verify_ctx.image_size = sizeof(unlock_input_data_type);
