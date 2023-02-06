@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 
+
 DECLARE_ASN1_ENCODE_FUNCTIONS_const(RSA, RSAPublicKey)
 DECLARE_ASN1_FUNCTIONS(X509_ALGOR)
 
@@ -299,8 +300,10 @@ int main(int argc, char* argv[])
 
 	unlock_input_data_type input;
 	memset(&input, 0x00, sizeof(unlock_input_data_type));
-	memcpy(&input.imei, imei.c_str(), sizeof(input.imei));
-	memcpy(&input.device_id, deviceId.c_str(), sizeof(input.device_id));
+	memcpy(&input.imei, imei.c_str(), 
+		std::min(sizeof(input.imei), imei.length()));
+	memcpy(&input.device_id, deviceId.c_str(), 
+		std::min(sizeof(input.device_id),deviceId.length()));
 
 	verify_ctx.key = ks->mykeybag->mykey->key_material;
 	verify_ctx.name = "unlock";
