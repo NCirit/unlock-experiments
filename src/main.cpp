@@ -316,4 +316,7 @@ int main(int argc, char* argv[])
 
 	verify_image(&verify_ctx);
 
+	verify_ctx.signature_addr = output->signature2;
+	verify_image(&verify_ctx);
+
 }

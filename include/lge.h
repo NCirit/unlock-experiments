@@ -82,8 +82,10 @@ typedef struct
 	uint32_t version; // 1
 	uint32_t hash_type; // sha256
 	uint32_t key_size; // rsa256
-	unsigned char signature[SECURITY_RSA_MAX_SIGN_SIZE]; // raw signature
-	unsigned char extra[492];
+	unsigned char signature[256]; // raw signature
+	unsigned char someOtherBytes[12];
+	unsigned char signature2[256]; // raw signature
+	unsigned char extra[480];
 } unlock_certificate_data_type;
 
 enum {
